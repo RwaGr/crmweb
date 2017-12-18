@@ -92,15 +92,24 @@ switch ($_GET["op"]){
  		$data= Array();
 
  		while ($reg=$rspta->fetch_object()){
+
+ 			if ($reg->estado == 1){
+ 					$estadocolor = '<span: class="label label-success">Prospecto</span>';
+ 				} else if ($reg->estado == 2){
+ 					$estadocolor = '<span: class="label label-warning" >Sin contacto</span>';
+ 				}  else if ($reg->estado == 3){
+ 					$estadocolor = '<span: class="label label-danger">Sin interes</span>';
+ 				}		
  			$data[]=array(  //Condicion desactivar sino condicion activar 
  				/**"0"=>($reg->condicion)?'<button class="btn btn-warning" onclick="mostrar('.$reg->idcontacto.')"><i class="fa fa-pencil"></i></button>'.
  				' <button class="btn btn-danger" onclick="desactivar('.$reg->idcontacto.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning" onclick="mostrar('.$reg->idcontacto.')"><i class="fa fa-pencil"></i></button>'.
  				' <button class="btn btn-primary" onclick="activar('.$reg->idcontacto.')"><i class="fa fa-check"></i></button>',*/
- 				"0"=>$reg->razonsocial,
- 				"1"=>$reg->tlf_1,
- 				"2"=>$reg->correo,
- 				"3"=>$reg->filtro, 				
- 				"4"=>$reg->estado
+ 				"0"=>'<button class="btn btn-warning" onclick="mostrar('.$reg->idcontacto.')"><i class="fa fa-pencil"></i></button>',
+ 				"1"=>$reg->razonsocial,
+ 				"2"=>$reg->tlf_1,
+ 				"3"=>$reg->correo,
+ 				"4"=>$reg->filtro, 
+ 				"5"=>$estadocolor							
  				);
  		}
  		$results = array(
