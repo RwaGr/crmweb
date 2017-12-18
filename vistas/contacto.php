@@ -19,6 +19,7 @@ require 'header.php';
                     <div class="panel-body table-responsive" id="listadoregistros">
                         <table id="tbllistado" class="table table-striped table-bordered table-condensed table-hover">
                           <thead>
+                            <th>Opciones</th>
                             <th>Razón social</th>
                             <th>Tlf </th>
                             <th>Correo</th>
@@ -28,6 +29,7 @@ require 'header.php';
                           <tbody>
                           </tbody>
                           <tfoot>
+                            <th>Opciones</th>
                             <th>Razón social</th>
                             <th>Tlf </th>
                             <th>Correo</th>
