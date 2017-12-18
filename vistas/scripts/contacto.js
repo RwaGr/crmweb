@@ -69,33 +69,9 @@ function listar()
                         console.log(e.responseText);    
                     }
                 },
-        /**'columns':[
-                    {data: 'rownum','sClass':'dt-body-center'},
-                    {data: 'razonsocial'},
-                    {data: 'tlf1_1'},
-                    {data: 'correo'},
-                    {data: 'filtro'},
-                    {data: 'estado'},
-                    {"orderable": true}
-                  ],*/
-
-        'columnDefs':[
-                        {
-                            "targets": [5],
-                            "data": "estado",
-                            "render": function(data,type,row) {
-                                if (data == 1){
-                                    return '<span: class="label label-succes">Activado</span>';
-                                } else if (data == 2){
-                                    return '<span: class="label bg-warning">Sin contactar</span>';
-                                } else if (data == 3){
-                                    return '<span: class="label bg-danger">Sin interes</span>';
-                                }
-                            }
-                        }
-                     ],
+        
         "bDestroy": true,
-        "iDisplayLength": 5,//Paginación
+        "iDisplayLength": 12,//Paginación
         "order": [[ 0, "desc" ]]//Ordenar (columna,orden)
     }).DataTable();
 }
@@ -132,8 +108,11 @@ function mostrar(idcontacto)
         data = JSON.parse(data);        
         mostrarform(true);
  
-        $("#nombre").val(data.nombre);
-        $("#descripcion").val(data.descripcion);
+        $("#razonsocial").val(data.razonsocial);
+        $("#tlf1_1").val(data.tlf_1);
+        $("#correo").val(data.correo);
+        $("#filtro").val(data.filtro);
+        $("#estado").val(data.estado);
         $("#idcontacto").val(data.idcontacto);
  
     })
