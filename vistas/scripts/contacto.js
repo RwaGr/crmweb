@@ -1,49 +1,22 @@
 var tabla;
 //Función que se ejecuta al inicio
 function init(){
-    mostrarform(false);
     listar();
  
-    $("#formulario").on("submit",function(e)
+   /** $("#formulario").on("submit",function(e)
     {
         guardaryeditar(e);  
-    })
+    })*/
 }
  
 //Función limpiar
 function limpiar()
-{
-    $("#razonsocial").val("");
-    $("#tlf1_1").val("");
-    $("#correo").val("");
-    $("#filtro").val("");
-    $("#estado").val("");
-}
- 
-//Función mostrar formulario
-function mostrarform(flag)
-{
-    limpiar();
-    if (flag)
-    {
-        $("#listadoregistros").hide();
-        $("#formularioregistros").show();
-        $("#btnGuardar").prop("disabled",false);
-        $("#btnagregar").hide();
-    }
-    else
-    {
-        $("#listadoregistros").show();
-        $("#formularioregistros").hide();
-        $("#btnagregar").show();
-    }
-}
- 
-//Función cancelarform
-function cancelarform()
-{
-    limpiar();
-    mostrarform(false);
+{   
+    $("#inidcontacto").val("");
+    $("#inrazonsocial").val("");
+    $("#intlf1_1").val("");
+    $("#incorreo").val("");
+    $("#infiltro").val("");    
 }
  
 //Función Listar
@@ -76,8 +49,7 @@ function listar()
     }).DataTable();
 }
 //Función para guardar o editar
- 
-function guardaryeditar(e)
+/**function guardaryeditar(e)
 {
     e.preventDefault(); //No se activará la acción predeterminada del evento
     $("#btnGuardar").prop("disabled",true);
@@ -93,58 +65,141 @@ function guardaryeditar(e)
         success: function(datos)
         {                    
               bootbox.alert({message:datos, size:'small', backdrop:true});           
-              mostrarform(false);
               tabla.ajax.reload();
         }
  
     });
     limpiar();
-}
- 
-function mostrar(idcontacto)
+}*/
+
+//Función para llevar datos al modal y editar 
+function editarModal(idcontacto)
 {
     $.post("../ajax/contacto.php?op=mostrar",{idcontacto : idcontacto}, function(data, status)
     {
         data = JSON.parse(data);        
-        mostrarform(true);
- 
-        $("#razonsocial").val(data.razonsocial);
-        $("#tlf1_1").val(data.tlf_1);
-        $("#correo").val(data.correo);
-        $("#filtro").val(data.filtro);
-        $("#estado").val(data.estado);
-        $("#idcontacto").val(data.idcontacto);
- 
+        
+        $("#mrazonsocial").val(data.razonsocial);
+        $("#mtlf_1").val(data.tlf_1);
+        $("#mcorreo").val(data.correo);
+        $("#mfiltro").val(data.filtro);
+       // $("#mestado").val(data.estado);
+        $("#midcontacto").val(data.idcontacto);
     })
 }
- 
-//Función para desactivar registros
-function desactivar(idcontacto)
+
+//Funcion para traer el modal con registros
+function mostrarModal(idcontacto)
 {
-    bootbox.confirm("¿Está Seguro de desactivar la Categoría?", function(result){
-        if(result)
-        {
-            $.post("../ajax/contacto.php?op=desactivar", {idcontacto : idcontacto}, function(e){
-                bootbox.alert({message:e, size:'small', backdrop:true });
-                tabla.ajax.reload();
-            }); 
+    $.post("../ajax/contacto.php?op=mostrar",{idcontacto : idcontacto}, function(data, status)
+    {
+        data = JSON.parse(data);        
+        
+        $("#mmrazonsocial").val(data.razonsocial);
+        $("#mmtlf_1").val(data.tlf_1);
+        $("#mmcorreo").val(data.correo);
+        $("#mmfiltro").val(data.filtro);
+        if (data.estado == 1) {
+            $("#mmestado").val('<span: class="label label-success">Prospecto</span>');
+        } else if (data.estado == 2) {
+            $("#mmestado").val('<span: class="label label-warning">Pendiente</span>');
+        } else if (data.estado == 3) {
+            $("#mmestado").val('<span: class="label label-danger">No interes</span>');
         }
+        $("#mmestado").val(data.estado);
+        $("#mmidcontacto").val(data.idcontacto);
     })
 }
- 
-//Función para activar registros
-function activar(idcontacto)
-{
-    bootbox.confirm("¿Está Seguro de activar la Categoría?", function(result){
-        if(result)
+
+//Boton para insertar datos desde el modal
+$('#inbtnGuardar').click(function(){
+
+    $razonsocial = $('inrazonsocial').val();
+    $tlf_1 = $('intlf_1').val();
+    $correo = $('incorreo').val();
+    $filtro = $('infiltro').val();
+
+   /** $.post("../ajax/contacto.php?op=guardaryeditar",
         {
-            $.post("../ajax/contacto.php?op=activar", {idcontacto : idcontacto}, function(e){
-                bootbox.alert({message:e, size:'small', backdrop:true });
-                tabla.ajax.reload();
-            }); 
+            razonsocial:razonsocial,
+            tlf_1:tlf_1,
+            correo:correo,
+            filtro:filtro
+
+        }, function(data){
+
+            if (data == 1) {
+                $('#mbtnCerrar').click();
+                bootbox.alert({message:data, size:'small', backdrop:true});
+                location.reload();
+
+            }
+
+        });*/
+    $.ajax({
+        url: "../ajax/contacto.php?op=guardaryeditar",
+        type: "POST",
+        data: [$razonsocial, $tlf_1, $correo, $filtro],
+        contentType: false,
+        processData: false,
+        
+        success: function(datos)
+        {     
+            $('#inbtnCerrar').click();
+            bootbox.alert({message:datos, size:'small', backdrop:true});           
+            tabla.ajax.reload();
         }
-    })
-}
  
+    });
+    limpiar();
+});
+
+//Boton para guardar datos desde el modal
+$('#mbtnGuardar').click(function(){
+
+    var idcontacto = $('midcontacto').val();
+    var razonsocial = $('mrazonsocial').val();
+    var tlf_1 = $('mtlf_1').val();
+    var correo = $('mcorreo').val();
+    var filtro = $('mfiltro').val();
+
+    /**$.post("../ajax/contacto.php?op=guardaryeditar",
+        {
+
+            idcontacto:idcontacto,
+            razonsocial:razonsocial,
+            tlf_1:tlf_1,
+            correo:correo,
+            filtro:filtro
+
+        }, function(data){
+
+            if (data == 1) {
+                $('#mbtnCerrar').click();
+                bootbox.alert({message:datos, size:'small', backdrop:true});
+                location.reload();
+
+            }
+
+        });*/
+    $.ajax({
+        url: "../ajax/contacto.php?op=guardaryeditar",
+        type: "POST",
+        data: {idcontacto, razonsocial, tlf_1, correo, filtro},
+        contentType: false,
+        processData: false,
+ 
+        success: function(datos)
+        {     
+              if (datos == 1) {
+                $('#mbtnCerrar').click();
+                location.reload();
+              }               
+              bootbox.alert({message:datos, size:'small', backdrop:true});           
+              tabla.ajax.reload();
+        }
+ 
+    });
+});
  
 init();
