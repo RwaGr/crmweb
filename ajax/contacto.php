@@ -96,19 +96,42 @@ switch ($_GET["op"]){
  			if ($reg->estado == 1){
  					$estadocolor = '<span: class="label label-success">Prospecto</span>';
  				} else if ($reg->estado == 2){
- 					$estadocolor = '<span: class="label label-warning" >Sin contacto</span>';
+ 					$estadocolor = '<span: class="label label-warning" >Pendiente</span>';
  				}  else if ($reg->estado == 3){
- 					$estadocolor = '<span: class="label label-danger">Sin interes</span>';
- 				}		
- 			$data[]=array(  //Condicion desactivar sino condicion activar 
- 				/**"0"=>($reg->condicion)?'<button class="btn btn-warning" onclick="mostrar('.$reg->idcontacto.')"><i class="fa fa-pencil"></i></button>'.
- 				' <button class="btn btn-danger" onclick="desactivar('.$reg->idcontacto.')"><i class="fa fa-close"></i></button>':'<button class="btn btn-warning" onclick="mostrar('.$reg->idcontacto.')"><i class="fa fa-pencil"></i></button>'.
- 				' <button class="btn btn-primary" onclick="activar('.$reg->idcontacto.')"><i class="fa fa-check"></i></button>',*/
- 				"0"=>'<button class="btn btn-warning" onclick="mostrar('.$reg->idcontacto.')"><i class="fa fa-pencil"></i></button>',
+ 					$estadocolor = '<span: class="label label-danger">No interes</span>';
+ 				}
+
+ 			switch ($reg->filtro) {
+ 						case '1':
+ 								$valor = 'Sin contactar';
+ 							break;
+ 						
+ 						case '2':
+ 								$valor = 'Interes';
+ 							break;
+
+ 						case '3':
+ 								$valor = 'Indeciso';
+ 							break;
+
+ 						case '4':
+ 								$valor = 'No contesta';
+ 							break;
+
+ 						case '5':
+ 								$valor = 'Volver a llamar';
+ 							break;
+
+ 						case '6':
+ 								$valor = 'Sin interes';
+ 							break;
+ 					}		
+ 			$data[]=array(
+ 				"0"=>'<button class="btn btn-primary" data-toggle="modal" data-target="#modalMostrar" onclick="mostrarModal('.$reg->idcontacto.')"><i class="fa fa-fw fa-search"></i></button>'.'<button class="btn btn-warning" data-toggle="modal" data-target="#modalEdit" onclick="editarModal('.$reg->idcontacto.')"><i class="fa fa-fw fa-edit"></i></button>',
  				"1"=>$reg->razonsocial,
  				"2"=>$reg->tlf_1,
  				"3"=>$reg->correo,
- 				"4"=>$reg->filtro, 
+ 				"4"=>$valor, 
  				"5"=>$estadocolor							
  				);
  		}
