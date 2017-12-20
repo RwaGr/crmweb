@@ -35,8 +35,9 @@ function listar()
                 ],
         "ajax":
                 {
-                    url: '../ajax/contacto.php?op=listar',
+                    url: '../ajax/mostrar.php',
                     type : "get",
+                    data: {op: "listar"},
                     dataType : "json",                      
                     error: function(e){
                         console.log(e.responseText);    
@@ -75,7 +76,11 @@ function listar()
 //Función para llevar datos al modal y editar 
 function editarModal(idcontacto)
 {
-    $.post("../ajax/contacto.php?op=mostrar",{idcontacto : idcontacto}, function(data, status)
+    $.post("../ajax/contacto.php",
+        {
+            op: "mostrar",
+            idcontacto : idcontacto
+        }, function(data, status)
     {
         data = JSON.parse(data);        
         
@@ -91,7 +96,8 @@ function editarModal(idcontacto)
 //Funcion para traer el modal con registros
 function mostrarModal(idcontacto)
 {
-    $.post("../ajax/contacto.php?op=mostrar",{idcontacto : idcontacto}, function(data, status)
+    $.post("../ajax/contacto.php",
+        {op: "mostrar", idcontacto : idcontacto}, function(data, status)
     {
         data = JSON.parse(data);        
         
@@ -119,34 +125,23 @@ $('#inbtnGuardar').click(function(){
     $correo = $('incorreo').val();
     $filtro = $('infiltro').val();
 
-   /** $.post("../ajax/contacto.php?op=guardaryeditar",
-        {
-            razonsocial:razonsocial,
-            tlf_1:tlf_1,
-            correo:correo,
-            filtro:filtro
-
-        }, function(data){
-
-            if (data == 1) {
-                $('#mbtnCerrar').click();
-                bootbox.alert({message:data, size:'small', backdrop:true});
-                location.reload();
-
-            }
-
-        });*/
     $.ajax({
-        url: "../ajax/contacto.php?op=guardaryeditar",
+        url: "../ajax/contacto.php",
         type: "POST",
-        data: [$razonsocial, $tlf_1, $correo, $filtro],
+        data: {
+            op: "guardaryeditar",
+            razonsocial: $razonsocial,
+            tlf_1: $tlf_1,
+            correo: $correo,
+            filtro: $filtro
+        },
         contentType: false,
         processData: false,
         
-        success: function(datos)
+        success: function(data)
         {     
             $('#inbtnCerrar').click();
-            bootbox.alert({message:datos, size:'small', backdrop:true});           
+            bootbox.alert({message:data, size:'small', backdrop:true});
             tabla.ajax.reload();
         }
  
@@ -158,10 +153,10 @@ $('#inbtnGuardar').click(function(){
 $('#mbtnGuardar').click(function(){
 
     var idcontacto = $('midcontacto').val();
-    var razonsocial = $('mrazonsocial').val();
-    var tlf_1 = $('mtlf_1').val();
-    var correo = $('mcorreo').val();
-    var filtro = $('mfiltro').val();
+    var razonsocial = $('mrazonsocial').text();
+    var tlf_1 = $('mtlf_1').text();
+    var correo = $('mcorreo').text();
+    var filtro = $('mfiltro').text();
 
     /**$.post("../ajax/contacto.php?op=guardaryeditar",
         {
@@ -182,20 +177,35 @@ $('#mbtnGuardar').click(function(){
             }
 
         });*/
+    console.log({
+        op: "guardaryeditar",
+        idcontacto: idcontacto,
+        razonsocial: razonsocial,
+        tlf_1: tlf_1,
+        correo: correo,
+        filtro: filtro
+    });
     $.ajax({
-        url: "../ajax/contacto.php?op=guardaryeditar",
+        url: "../ajax/contacto.php",
         type: "POST",
-        data: {idcontacto, razonsocial, tlf_1, correo, filtro},
+        data: {
+            op: "guardaryeditar",
+            idcontacto: idcontacto,
+            razonsocial: razonsocial,
+            tlf_1: tlf_1,
+            correo: correo,
+            filtro: filtro
+        },
         contentType: false,
         processData: false,
  
-        success: function(datos)
+        success: function(data)
         {     
-              if (datos == 1) {
+              if (data == 1) {
                 $('#mbtnCerrar').click();
                 location.reload();
               }               
-              bootbox.alert({message:datos, size:'small', backdrop:true});           
+              bootbox.alert({message:data, size:'small', backdrop:true});
               tabla.ajax.reload();
         }
  
