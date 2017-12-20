@@ -121,9 +121,9 @@ function mostrarModal(idcontacto)
 $('#inbtnGuardar').click(function(){
 
     $razonsocial = $('inrazonsocial').val();
-    $tlf_1 = $('intlf_1').val();
-    $correo = $('incorreo').val();
-    $filtro = $('infiltro').val();
+    $tlf_1 = $('#intlf_1').val();
+    $correo = $('#incorreo').val();
+    $filtro = $('#infiltro').val();
 
     $.ajax({
         url: "../ajax/contacto.php",
@@ -135,8 +135,6 @@ $('#inbtnGuardar').click(function(){
             correo: $correo,
             filtro: $filtro
         },
-        contentType: false,
-        processData: false,
         
         success: function(data)
         {     
@@ -152,31 +150,12 @@ $('#inbtnGuardar').click(function(){
 //Boton para guardar datos desde el modal
 $('#mbtnGuardar').click(function(){
 
-    var idcontacto = $('midcontacto').val();
-    var razonsocial = $('mrazonsocial').text();
-    var tlf_1 = $('mtlf_1').text();
-    var correo = $('mcorreo').text();
-    var filtro = $('mfiltro').text();
+    var idcontacto = $('#midcontacto').val();
+    var razonsocial = $('#mrazonsocial').val();
+    var tlf_1 = $('#mtlf_1').val();
+    var correo = $('#mcorreo').val();
+    var filtro = $('#mfiltro').val();
 
-    /**$.post("../ajax/contacto.php?op=guardaryeditar",
-        {
-
-            idcontacto:idcontacto,
-            razonsocial:razonsocial,
-            tlf_1:tlf_1,
-            correo:correo,
-            filtro:filtro
-
-        }, function(data){
-
-            if (data == 1) {
-                $('#mbtnCerrar').click();
-                bootbox.alert({message:datos, size:'small', backdrop:true});
-                location.reload();
-
-            }
-
-        });*/
     console.log({
         op: "guardaryeditar",
         idcontacto: idcontacto,
@@ -196,8 +175,6 @@ $('#mbtnGuardar').click(function(){
             correo: correo,
             filtro: filtro
         },
-        contentType: false,
-        processData: false,
  
         success: function(data)
         {     

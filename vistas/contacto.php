@@ -47,5 +47,5 @@ require 'header.php';
 require 'footer.php';
 require 'modalcontacto.php';
 ?>
-<script type="text/javascript" src="scripts/contacto.js?v0.1.9"></script>
+<script type="text/javascript" src="scripts/contacto.js?v0.1.13"></script>
 

@@ -11,7 +11,6 @@ $correo=$_POST["correo"];
 $filtro=$_POST["filtro"];
 $estado=$_POST["estado"];
 $op=$_POST["op"];
-echo $op;
 
 switch ($op){
 	case 'guardaryeditar':
