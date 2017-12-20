@@ -21,6 +21,7 @@ require 'header.php';
                           <thead>
                             <th>Opciones</th>
                             <th>Razón social</th>
+                            <th>Contacto </th>
                             <th>Tlf </th>
                             <th>Correo</th>
                             <th>Filtro</th>
@@ -31,6 +32,7 @@ require 'header.php';
                           <tfoot>
                             <th>Opciones</th>
                             <th>Razón social</th>
+                            <th>Contacto </th>
                             <th>Tlf </th>
                             <th>Correo</th>
                             <th>Filtro</th>
