@@ -1,5 +1,5 @@
 <?php
-require_once "../modelos/Contacto.php";
+require_once "../modelos/Contacto.php"; 
 require_once "../config/Conexion.php";
 
 /**
@@ -8,7 +8,7 @@ require_once "../config/Conexion.php";
  * Date: 19-12-17
  * Time: 22:18
  */
-class MostrarRegistros
+class MostrarContactos
 {
     private $contacto;
 
@@ -17,8 +17,23 @@ class MostrarRegistros
         $this->contacto = new Contacto();
     }
 
-    public function mostrar(){
+    public function mostrartabla(){
         return $this->contacto->listar();
+    }
+
+}
+
+class MostrarProspectos
+{
+    private $prospecto;
+
+    function __construct()
+    {
+        $this->prospecto = new Contacto();
+    }
+
+    public function mostrartabla(){
+        return $this->prospecto->listarProspecto();
     }
 
 }

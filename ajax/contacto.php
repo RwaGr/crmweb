@@ -78,22 +78,39 @@ switch ($op){
 						break;
 				}
 			}
-			$rspta=$contacto->editar($idcontacto,$razonsocial,$rut,$giro,$contacto,$cargo,$tlf_1,$tlf_2,$correo,$region,$ciudad,$comuna,$direccion,$canal_deingreso,$filtro,$enlace,$codigopostal,$imagen,$sitioweb);
+			$rspta=$contacto->editar($idcontacto,$razonsocial,$rut,$giro,$contacto,$cargo,$tlf_1,$tlf_2,$correo,$region,$ciudad,$comuna,$direccion,$canal_deingreso,$filtro,$estado,$enlace,$codigopostal,$imagen,$sitioweb);
 			echo $rspta ? "Contacto actualizado" : "Contacto no se pudo actualizar";
 		}
 	break;
 
-	/**case 'desactivar':
-		$rspta=$contacto->desactivar($idcontacto);
- 		echo $rspta ? "Contacto Desactivada" : "Contacto no se puede desactivar";
- 		break;
-	break;
+	case 'editarprospec':
 
-	case 'activar':
-		$rspta=$contacto->activar($idcontacto);
- 		echo $rspta ? "Contacto activada" : "Contacto no se puede activar";
- 		break;
-	break;*/
+		if ($filtro) {
+				switch ($filtro) {
+					case '1':
+						$estado = 2;
+						break;
+					case '2':
+						$estado = 1;
+						break;
+					case '3':
+						$estado = 1;
+						break;
+					case '4':
+						$estado = 2;
+						break;
+					case '5':
+						$estado = 2;
+						break;
+					case '6':
+						$estado = 3;
+						break;
+				}
+			}
+			$rspta=$contacto->editarProspecto($idcontacto,$filtro,$estado);
+			echo $rspta ? "Contacto actualizado" : "Contacto no se pudo actualizar";
+
+	break;
 
 	case 'mostrar':
 		$rspta=$contacto->mostrar($idcontacto);
