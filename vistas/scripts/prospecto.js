@@ -3,21 +3,6 @@ var tabla;
 function init(){
     listar();
  
-   /** $("#formulario").on("submit",function(e)
-    {
-        guardaryeditar(e);  
-    })*/
-}
- 
-//Función limpiar
-function limpiar()
-{   
-    $("#inidcontacto").val("");
-    $("#inrazonsocial").val("");
-    $('#incontacto').val("");
-    $("#intlf_1").val("");
-    $("#incorreo").val("");
-    $("#infiltro").val("");    
 }
  
 //Función Listar
@@ -36,7 +21,7 @@ function listar()
                 ],
         "ajax":
                 {
-                    url: '../ajax/mostrar.php',
+                    url: '../ajax/mostrarpros.php',
                     type : "get",
                     dataType : "json",                      
                     error: function(e){
@@ -64,25 +49,8 @@ function editarModal($idcontacto)
         
         $("#midcontacto").val(data.idcontacto);
         $("#mrazonsocial").val(data.razonsocial);
-        $("#mrut").val(data.rut);
-        $("#mgiro").val(data.giro);
-        $("#mcontacto").val(data.contacto);
-        $("#mcargo").val(data.cargo);
-        $("#mtlf_1").val(data.tlf_1);
-        $("#mtlf_2").val(data.tlf_2);
-        $("#mcorreo").val(data.correo);
-        $("#mregion").val(data.region);
-        $("#mciudad").val(data.ciudad);
-        $("#mcomuna").val(data.comuna);
-        $("#mdireccion").val(data.direccion);
-        $("#mcanal").val(data.canal);
-        $("#mfiltro").val(data.filtro);
-       // $("#mestado").val(data.estado);
-        $("#menlace").val(data.enlace);
-       //$("#mfec_ingreso").val(data.mfec_ingreso);
-        $("#mcodigopostal").val(data.codigopostal);
-        $("#mimagen").val(data.imagen);
-        $("#msitioweb").val(data.sitioweb);
+        $("#mcontacto").val(data.contacto);        
+        $("#mfiltro").val(data.filtro);      
     })
 }
 
@@ -153,109 +121,19 @@ function mostrarModal(idcontacto)
     })
 }
 
-//Boton para insertar datos desde el modal
-$('#inbtnGuardar').click(function(){
-
-    $razonsocial = $('#inrazonsocial').val();
-    $contacto = $('#incontacto').val();
-    $tlf_1 = $('#intlf_1').val();
-    $correo = $('#incorreo').val();
-    $filtro = $('#infiltro').val();
-
-    $.ajax({
-        url: "../ajax/contacto.php",
-        type: "POST",
-        data: {
-            op: "guardaryeditar",
-            razonsocial: $razonsocial,
-            contacto: $contacto,
-            tlf_1: $tlf_1,
-            correo: $correo,
-            filtro: $filtro
-        },
-        
-        success: function(data)
-        {     
-            $('#inbtnCerrar').click();
-            bootbox.alert({message:data, size:'small', backdrop:true});
-            tabla.ajax.reload();
-        }
- 
-    });
-    limpiar();
-});
-
 //Boton para guardar datos desde el modal
 $('#mbtnGuardar').click(function(){
 
     $idcontacto = $('#midcontacto').val();
-    $razonsocial = $('#mrazonsocial').val();
-    $rut = $('#mrut').val();
-    $giro = $('#mgiro').val();
-    $contacto = $('#mcontacto').val();
-    $cargo = $('#mcargo').val();
-    $tlf_1 = $('#mtlf_1').val();
-    $tlf_2 = $('#mtlf_2').val();
-    $correo = $('#mcorreo').val();
-    $region = $('#mregion').val();
-    $ciudad = $('#mciudad').val();
-    $comuna = $('#mcomuna').val();
-    $direccion = $('#mdireccion').val();
-    $canal = $('#mcanal').val();
     $filtro = $('#mfiltro').val();
-    $enlace = $('#menlace').val();
-    $codigopostal = $('#mcodigopostal').val();
-    $imagen = $('#mimagen').val();
-    $sitioweb = $('#msitioweb').val();
-    //$estado = $('#mestado').val();
-    //$ingreso = $('#mingreso').val();
 
-    console.log({
-        op: "guardaryeditar",
-        idcontacto: $idcontacto,
-            razonsocial: $razonsocial,
-            rut: $rut,
-            giro: $giro,
-            contacto: $contacto,
-            cargo: $cargo,
-            tlf_1: $tlf_1,
-            tlf_2: $tlf_2,
-            correo: $correo,
-            region: $region,
-            ciudad: $ciudad,
-            comuna: $comuna,
-            direccion: $direccion,
-            canal: $canal,
-            filtro: $filtro,
-            enlace: $enlace,
-            codigopostal: $codigopostal,
-            imagen: $imagen,
-            sitioweb: $sitioweb
-    });
     $.ajax({
         url: "../ajax/contacto.php",
         type: "POST",
         data: {
             op: "guardaryeditar",
             idcontacto: $idcontacto,
-            razonsocial: $razonsocial,
-            rut: $rut,
-            giro: $giro,
-            contacto: $contacto,
-            cargo: $cargo,
-            tlf_1: $tlf_1,
-            tlf_2: $tlf_2,
-            correo: $correo,
-            region: $region,
-            ciudad: $ciudad,
-            comuna: $comuna,
-            direccion: $direccion,
-            canal: $canal,
-            filtro: $filtro,
-            enlace: $enlace,
-            codigopostal: $codigopostal,
-            imagen: $imagen,
-            sitioweb: $sitioweb
+            filtro: $filtro           
         },
  
         success: function(data)
