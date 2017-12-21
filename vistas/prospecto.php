@@ -10,7 +10,7 @@ require 'header.php';
               <div class="col-md-12">
                   <div class="box">
                     <div class="box-header with-border">
-                          <h1 class="box-title">Contacto <button class="btn btn-success" data-toggle="modal" data-target="#modalInsertar"><i class="fa fa-plus-circle"></i> Agregar</button></h1>
+                          <h1 class="box-title">Prospecto</h1>
                         <div class="box-tools pull-right">
                         </div>
                     </div>
@@ -47,7 +47,7 @@ require 'header.php';
       </div>
 <?php
 require 'footer.php';
-require 'modalcontacto.php';
+require 'modalprospecto.php';
 ?>
-<script type="text/javascript" src="scripts/contacto.js?v0.1.15"></script>
+<script type="text/javascript" src="scripts/prospecto.js?v0.1.16"></script>
 
