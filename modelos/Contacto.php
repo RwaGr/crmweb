@@ -9,7 +9,7 @@ Class Contacto
 	{
 
 	}
-
+//-------------------------------------------------------      CONTACTO         ------------------------------------------------------------
 	//Implementamos un método para insertar registros
 	public function insertar($razonsocial,$contacto,$tlf_1,$correo,$filtro,$estado)
 	{
@@ -21,7 +21,7 @@ Class Contacto
 	//Implementamos un método para editar registros
 	public function editar($idcontacto,$razonsocial,$rut,$giro,$contacto,$cargo,$tlf_1,$tlf_2,$correo,$region,$ciudad,$comuna,$direccion,$canal_deingreso,$filtro,$estado,$enlace,$fec_ingreso,$codigopostal,$imagen,$sitioweb)
 	{
-		$sql="UPDATE contacto SET razonsocial='$razonsocial',rut='$rut',giro='$giro',contacto='$contacto',cargo='$cargo',tlf_1='$tlf_1',tlf_2='$tlf_2',correo='$correo',region='$region',ciudad='$ciudad',comuna='$comuna',direccion='$direccion',canal_deingreso='$canal_deingreso',filtro='$filtro',estado='$estado'enlace='$enlace', fec_ingreso='$fec_ingreso', codigopostal='$codigopostal', imagen='$imagen', sitioweb='$sitioweb' WHERE idcontacto='$idcontacto'";
+		$sql="UPDATE contacto SET razonsocial='$razonsocial',rut='$rut',giro='$giro',contacto='$contacto',cargo='$cargo',tlf_1='$tlf_1',tlf_2='$tlf_2',correo='$correo',region='$region',ciudad='$ciudad',comuna='$comuna',direccion='$direccion',canal_deingreso='$canal_deingreso',filtro='$filtro',estado='$estado',enlace='$enlace', fec_ingreso='$fec_ingreso', codigopostal='$codigopostal', imagen='$imagen', sitioweb='$sitioweb' WHERE idcontacto='$idcontacto'";
 		return ejecutarConsulta($sql);
 	}
 
@@ -38,6 +38,21 @@ Class Contacto
 		$sql="SELECT * FROM contacto";
 		return ejecutarConsulta($sql);		
 	}
+
+//-------------------------------------------------------      PROSPECTO        ------------------------------------------------------------
+
+	public function editarProspecto($idcontacto,$filtro,$estado)
+	{
+		$sql="UPDATE contacto SET filtro='$filtro',estado='$estado' WHERE idcontacto='$idcontacto'";
+		return ejecutarConsulta($sql);
+	}
+
+	public function listarProspecto()
+	{
+		$sql="SELECT * FROM contacto WHERE estado = 1";
+		return ejecutarConsulta($sql);		
+	}
+	
 }
 
 ?>
