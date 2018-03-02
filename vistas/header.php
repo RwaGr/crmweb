@@ -1,3 +1,9 @@
+
+<?php 
+  if (strlen(session_id())<1) {
+    session_start();
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -7,7 +13,11 @@
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.5 -->
-    <link rel="stylesheet" href="../public/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../public/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../public/css/bootstrap-select.min.css">
+    <!-- Jquery CSS  -->
+    <link rel="stylesheet" href="../public/css/jquery-ui.min.css">
+    <link rel="stylesheet" href="../public/css/jquery.timepicker.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="../public/css/font-awesome.css">
     <!-- Theme style -->
@@ -17,16 +27,14 @@
     <link rel="stylesheet" href="../public/css/_all-skins.min.css">
     <link rel="apple-touch-icon" href="../public/img/apple-touch-icon.png">
     <link rel="shortcut icon" href="../public/img/favicon.ico">
-
+    
     <!-- DATATABLES -->
     <link rel="stylesheet" type="text/css" href="../public/datatables/jquery.dataTables.min.css">    
     <link href="../public/datatables/buttons.dataTables.min.css" rel="stylesheet"/>
     <link href="../public/datatables/responsive.dataTables.min.css" rel="stylesheet"/>
 
-    <link rel="stylesheet" type="text/css" href="../public/css/bootstrap-select.min.css">
-
   </head>
-  <body class="hold-transition skin-blue-light sidebar-mini">
+  <body class="hold-transition skin-purple sidebar-mini">
     <div class="wrapper">
 
       <header class="main-header">
@@ -34,9 +42,9 @@
         <!-- Logo -->
         <a href="index2.html" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>IT</b>Ventas</span>
+          <span class="logo-mini"><b>PDV</b>CRM web</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>ITVentas</b></span>
+          <span class="logo-lg"><b>PDV</b></span>
         </a>
 
         <!-- Header Navbar: style can be found in header.less -->
@@ -53,16 +61,17 @@
               <!-- User Account: style can be found in dropdown.less -->
               <li class="dropdown user user-menu">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <img src="../public/dist/img/user2-160x160.jpg" class="user-image" alt="User Image">
-                  <span class="hidden-xs">Juan Carlos Arcila</span>
+                  <img src="../files/usuarios/<?php echo $_SESSION['imagen']; ?>" class="user-image" alt="User Image">
+                  <span class="hidden-xs"><?php echo $_SESSION['nombre']; ?></span>
                 </a>
                 <ul class="dropdown-menu">
                   <!-- User image -->
                   <li class="user-header">
-                    <img src="../public/dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                    <img src="../files/usuarios/<?php echo $_SESSION['imagen']; ?>" class="img-circle" alt="User Image">
                     <p>
-                      www.incanatoit.com - Desarrollando Software
-                      <small>www.youtube.com/jcarlosad7</small>
+                      ID   : 0<?php echo $_SESSION['idusuario']; ?> <br>
+                      Cargo: <?php echo $_SESSION['cargo']; ?>
+                      <small><?php echo $_SESSION['email']; ?></small>
                     </p>
                   </li>
                   
@@ -70,7 +79,7 @@
                   <li class="user-footer">
                     
                     <div class="pull-right">
-                      <a href="#" class="btn btn-default btn-flat">Cerrar</a>
+                      <a href="../ajax/usuario.php?op=salir" class="btn btn-default btn-flat">Cerrar</a>
                     </div>
                   </li>
                 </ul>
@@ -88,56 +97,103 @@
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header"></li>
-            <li>
-              <a href="#">
-                <i class="fa fa-tasks"></i> <span>Escritorio</span>
-              </a>
-            </li>            
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-laptop"></i>
-                <span>Almacén</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="articulo.php"><i class="fa fa-circle-o"></i> Artículos</a></li>
-                <li><a href="categoria.php"><i class="fa fa-circle-o"></i> Categorías</a></li>
-              </ul>
-            </li>
+            <?php 
+              if ($_SESSION['escritorio']==1) {
+                echo '<li>
+                        <a href="#">
+                          <i class="fa fa-tasks"></i> <span>Escritorio</span>
+                        </a>
+                      </li>';
+              }
+            ?>
+            <?php 
+              if ($_SESSION['agenda']==1) {
+                echo '<li class="treeview">
+                        <a href="#">
+                          <i class="fa fa-calendar"></i>
+                          <span>Agenda</span>
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="agenda.php"><i class="fa fa-circle-o"></i>Registros</a></li>
+                          <li><a href="noacceso.php"><i class="fa fa-circle-o"></i>Calendario</a></li>
+                        </ul>
+                      </li>';
+              }
+            ?>
+            <?php 
+              if ($_SESSION['contacto']==1) {
+                echo '<li class="treeview">
+                        <a href="#">
+                          <i class="fa fa-users"></i>
+                          <span>Contactos</span>
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="contacto.php"><i class="fa fa-circle-o"></i>Contactos</a></li>
+                        </ul>
+                      </li>';
+              }
+            ?>
+            <?php 
+              if ($_SESSION['oportunidades']==1) {
+                echo '<li class="treeview">
+                        <a href="#">
+                          <i class="fa fa-search"></i>
+                          <span>Oportunidades</span>
+                           <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="prospecto.php"><i class="fa fa-circle-o"></i>Prospectos</a></li>
+                        </ul>
+                      </li>';
+              }
+            ?>                   
+            <?php 
+              if ($_SESSION['negociaciones']==1) {
+                echo '<li class="treeview">
+                        <a href="#">
+                          <i class="fa fa-usd"></i>
+                          <span>Negociaciones</span>
+                           <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="cotizacion.php"><i class="fa fa-circle-o"></i> Ventas</a></li>
+                          <li><a href="clientes.php"><i class="fa fa-circle-o"></i> Clientes</a></li>
+                        </ul>
+                      </li>';
+              }
+            ?>
+            <?php 
+              if ($_SESSION['articulos']==1) {
+                echo '<li class="treeview">
+                        <a href="#">
+                          <i class="fa fa-cubes"></i>
+                          <span>Articulos</span>
+                           <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="articulo.php"><i class="fa fa-circle-o"></i>Gestionar</a></li>
+                        </ul>
+                      </li>';
+              }
+            ?>
+            <?php 
+              if ($_SESSION['acceso']==1) {
+                echo '<li class="treeview">
+                        <a href="#">
+                          <i class="fa fa-folder"></i> <span>Acceso</span>
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="usuario.php"><i class="fa fa-circle-o"></i> Usuarios</a></li>
+                          <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Permisos</a></li>
+                          
+                        </ul>
+                      </li>';
+              }
+            ?>
             
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-th"></i>
-                <span>Compras</span>
-                 <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="ingreso.php"><i class="fa fa-circle-o"></i> Ingresos</a></li>
-                <li><a href="proveedor.php"><i class="fa fa-circle-o"></i> Proveedores</a></li>
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-shopping-cart"></i>
-                <span>Ventas</span>
-                 <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="venta.php"><i class="fa fa-circle-o"></i> Ventas</a></li>
-                <li><a href="cliente.php"><i class="fa fa-circle-o"></i> Clientes</a></li>
-              </ul>
-            </li>                       
-            <li class="treeview">
-              <a href="#">
-                <i class="fa fa-folder"></i> <span>Acceso</span>
-                <i class="fa fa-angle-left pull-right"></i>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="usuario.php"><i class="fa fa-circle-o"></i> Usuarios</a></li>
-                <li><a href="permiso.php"><i class="fa fa-circle-o"></i> Permisos</a></li>
-                
-              </ul>
-            </li>
             <li class="treeview">
               <a href="#">
                 <i class="fa fa-bar-chart"></i> <span>Consulta Compras</span>

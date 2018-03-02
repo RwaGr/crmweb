@@ -1,26 +1,93 @@
-var tabla;
 //Función que se ejecuta al inicio
 function init(){
+    mostrarform(false);
     listar();
+
  
-   /** $("#formulario").on("submit",function(e)
+    $("#formulario").on("submit",function(e)
     {
         guardaryeditar(e);  
-    })*/
+    })
+
+    $("#imagenmuestra").hide();
 }
  
 //Función limpiar
 function limpiar()
-{   
-    $("#inidcontacto").val("");
-    $("#inrazonsocial").val("");
-    $('#incontacto').val("");
-    $("#intlf_1").val("");
-    $("#incorreo").val("");
-    $("#infiltro").val("");    
+{
+    $("#idcontacto").val("");
+    $("#razonsocial").val("");
+    $("#rut").val("");
+    $("#giro").val("");
+    $("#contacto").val("");
+    $("#cargo").val("");
+    $("#tlf_1").val("");
+    $("#tlf_2").val("");
+    $("#correo").val("");
+    $("#region").val("");
+    $("#ciudad").val("");
+    $("#comuna").val("");
+    $("#direccion").val("");
+    $("#canal").val("");
+    $("#filtro").val("");
+    $("#enlace").val("");
+    $("#codigopostal").val("");
+    $("#imagen").val("");
+    $("#sitioweb").val("");
+    $("#imagenmuestra").attr("src","");
+    $("#imagenactual").val("");
+
 }
  
-//Función Listar
+//Función mostrar formulario
+function mostrarform(flag)
+{
+    limpiar();
+    if (flag)
+    {
+        $("#listadoregistros").hide();
+        $("#formularioregistros").show();
+        $("#btnGuardar").prop("disabled",false);
+        $("#btnGuardar").show();
+        $("#btnagregar").hide();
+
+    }
+    else
+    {
+        $("#listadoregistros").show();
+        $("#formularioregistros").hide();
+        $("#btnagregar").show();
+
+    }
+}
+
+//Función cancelarform
+function cancelarform()
+{
+    limpiar();
+    mostrarform(false);
+
+    $("#razonsocial").prop("disabled",false);
+    $("#rut").prop("disabled",false);
+    $("#giro").prop("disabled",false);
+    $("#contacto").prop("disabled",false);
+    $("#cargo").prop("disabled",false);
+    $("#tlf_1").prop("disabled",false);
+    $("#tlf_2").prop("disabled",false);
+    $("#correo").prop("disabled",false);
+    $("#region").prop("disabled",false);
+    $("#ciudad").prop("disabled",false);
+    $("#comuna").prop("disabled",false);
+    $("#direccion").prop("disabled",false);
+    $("#canal_deingreso").prop("disabled",false);
+    $("#filtro").prop("disabled",false);
+    $("#enlace").prop("disabled",false);
+    $("#codigopostal").prop("disabled",false);
+    $("#imagen").prop("disabled",false);
+    $("#sitioweb").prop("disabled",false);
+}
+ 
+//Función Listar contactos
 function listar()
 {
     tabla=$('#tbllistado').dataTable(
@@ -36,236 +103,125 @@ function listar()
                 ],
         "ajax":
                 {
-                    url: '../ajax/mostrar.php',
+                    url: '../ajax/contacto.php?op=listar',
                     type : "get",
                     dataType : "json",                      
                     error: function(e){
                         console.log(e.responseText);    
                     }
                 },
-        
-        responsive: true,
         "bDestroy": true,
-        "iDisplayLength": 10,//Paginación
+        "iDisplayLength": 12,//Paginación
         "order": [[ 0, "desc" ]]//Ordenar (columna,orden)
     }).DataTable();
 }
 
-//Función para llevar datos al modal y editar 
-function editarModal($idcontacto)
+//Función para guardar o editar
+function guardaryeditar(e)
 {
-    $.post("../ajax/contacto.php",
-        {
-            op: "mostrar",
-            idcontacto : $idcontacto
-        }, function(data, status)
-    {
-        data = JSON.parse(data);        
-        
-        $("#midcontacto").val(data.idcontacto);
-        $("#mrazonsocial").val(data.razonsocial);
-        $("#mrut").val(data.rut);
-        $("#mgiro").val(data.giro);
-        $("#mcontacto").val(data.contacto);
-        $("#mcargo").val(data.cargo);
-        $("#mtlf_1").val(data.tlf_1);
-        $("#mtlf_2").val(data.tlf_2);
-        $("#mcorreo").val(data.correo);
-        $("#mregion").val(data.region);
-        $("#mciudad").val(data.ciudad);
-        $("#mcomuna").val(data.comuna);
-        $("#mdireccion").val(data.direccion);
-        $("#mcanal").val(data.canal);
-        $("#mfiltro").val(data.filtro);
-       // $("#mestado").val(data.estado);
-        $("#menlace").val(data.enlace);
-       //$("#mfec_ingreso").val(data.mfec_ingreso);
-        $("#mcodigopostal").val(data.codigopostal);
-        $("#mimagen").val(data.imagen);
-        $("#msitioweb").val(data.sitioweb);
-    })
-}
-
-//Funcion para traer el modal con registros
-function mostrarModal(idcontacto)
-{
-    $.post("../ajax/contacto.php",
-        {op: "mostrar", idcontacto : idcontacto}, function(data, status)
-    {
-        data = JSON.parse(data);        
-        
-        $("#mmidcontacto").val(data.idcontacto);
-        $("#mmrazonsocial").val(data.razonsocial);
-        $("#mmrut").val(data.rut);
-        $("#mmgiro").val(data.giro);
-        $("#mmcontacto").val(data.contacto);
-        $("#mmcargo").val(data.cargo);
-        $("#mmtlf_1").val(data.tlf_1);
-        $("#mmtlf_2").val(data.tlf_2);
-        $("#mmcorreo").val(data.correo);
-        $("#mmregion").val(data.region);
-        $("#mmciudad").val(data.ciudad);
-        $("#mmcomuna").val(data.comuna);
-        $("#mmdireccion").val(data.direccion);
-        $("#mmcanal").val(data.canal);
-
-        switch (data.filtro) {
-            case '1':
-                $("#mmfiltro").html('<label class="text">Sin contactar</label>');
-                break;
-            
-            case '2':
-                $("#mmfiltro").html('<label class="text">Interés</label>');
-                break;
-
-            case '3':
-                $("#mmfiltro").html('<label class="text">Indeciso</label>');
-                break;
-
-            case '4':
-                $("#mmfiltro").html('<label class="text">Sin responder</label>');
-                break;
-
-            case '5':
-                $("#mmfiltro").html('<label class="text">Llamar después</label>');
-                break;
-
-            case '6':
-                $("#mmfiltro").html('<label class="text">Sin interés</label>');
-                break;
-        }
-
-        if (data.estado == 1) {
-            $("#mmestado").html('<span: class="label label-success">Prospecto</span>');
-        } else if (data.estado == 2) {
-            $("#mmestado").html('<span: class="label label-warning">Pendiente</span>');
-        } else if (data.estado == 3) {
-            $("#mmestado").html('<span: class="label label-danger">No interes</span>');
-        }
-        
-        //$("#mmenlace").html('<a href="'data.enlace'">Enlace API</a>');
-        $("#mmenlace").val(data.enlace);
-        $("#mmingreso").val(data.ingreso);
-        $("#mmcodigopostal").val(data.codigopostal);
-        $("#mmimagen").val(data.imagen);
-        //$("#mmsitioweb").html('<a href="'data.sitioweb'">'data.sitioweb'</a>');
-        $("#mmsitioweb").val(data.sitioweb);
-    })
-}
-
-//Boton para insertar datos desde el modal
-$('#inbtnGuardar').click(function(){
-
-    $razonsocial = $('#inrazonsocial').val();
-    $contacto = $('#incontacto').val();
-    $tlf_1 = $('#intlf_1').val();
-    $correo = $('#incorreo').val();
-    $filtro = $('#infiltro').val();
-
+    e.preventDefault(); //No se activará la acción predeterminada del evento
+    $("#btnGuardar").prop("disabled",true);
+    var formData = new FormData($("#formulario")[0]);
+ 
     $.ajax({
-        url: "../ajax/contacto.php",
+        url: "../ajax/contacto.php?op=guardaryeditar",
         type: "POST",
-        data: {
-            op: "guardaryeditar",
-            razonsocial: $razonsocial,
-            contacto: $contacto,
-            tlf_1: $tlf_1,
-            correo: $correo,
-            filtro: $filtro
-        },
-        
-        success: function(data)
-        {     
-            $('#inbtnCerrar').click();
-            bootbox.alert({message:data, size:'small', backdrop:true});
-            tabla.ajax.reload();
+        data: formData,
+        contentType: false,
+        processData: false,
+ 
+        success: function(datos)
+        {                    
+              bootbox.alert({message:datos, size:'small', backdrop:true});           
+              mostrarform(false);
+              tabla.ajax.reload();
         }
  
     });
     limpiar();
-});
+}
 
-//Boton para guardar datos desde el modal
-$('#mbtnGuardar').click(function(){
-
-    $idcontacto = $('#midcontacto').val();
-    $razonsocial = $('#mrazonsocial').val();
-    $rut = $('#mrut').val();
-    $giro = $('#mgiro').val();
-    $contacto = $('#mcontacto').val();
-    $cargo = $('#mcargo').val();
-    $tlf_1 = $('#mtlf_1').val();
-    $tlf_2 = $('#mtlf_2').val();
-    $correo = $('#mcorreo').val();
-    $region = $('#mregion').val();
-    $ciudad = $('#mciudad').val();
-    $comuna = $('#mcomuna').val();
-    $direccion = $('#mdireccion').val();
-    $canal = $('#mcanal').val();
-    $filtro = $('#mfiltro').val();
-    $enlace = $('#menlace').val();
-    $codigopostal = $('#mcodigopostal').val();
-    $imagen = $('#mimagen').val();
-    $sitioweb = $('#msitioweb').val();
-    //$estado = $('#mestado').val();
-    //$ingreso = $('#mingreso').val();
-
-    console.log({
-        op: "guardaryeditar",
-        idcontacto: $idcontacto,
-            razonsocial: $razonsocial,
-            rut: $rut,
-            giro: $giro,
-            contacto: $contacto,
-            cargo: $cargo,
-            tlf_1: $tlf_1,
-            tlf_2: $tlf_2,
-            correo: $correo,
-            region: $region,
-            ciudad: $ciudad,
-            comuna: $comuna,
-            direccion: $direccion,
-            canal: $canal,
-            filtro: $filtro,
-            enlace: $enlace,
-            codigopostal: $codigopostal,
-            imagen: $imagen,
-            sitioweb: $sitioweb
-    });
-    $.ajax({
-        url: "../ajax/contacto.php",
-        type: "POST",
-        data: {
-            op: "guardaryeditar",
-            idcontacto: $idcontacto,
-            razonsocial: $razonsocial,
-            rut: $rut,
-            giro: $giro,
-            contacto: $contacto,
-            cargo: $cargo,
-            tlf_1: $tlf_1,
-            tlf_2: $tlf_2,
-            correo: $correo,
-            region: $region,
-            ciudad: $ciudad,
-            comuna: $comuna,
-            direccion: $direccion,
-            canal: $canal,
-            filtro: $filtro,
-            enlace: $enlace,
-            codigopostal: $codigopostal,
-            imagen: $imagen,
-            sitioweb: $sitioweb
-        },
- 
-        success: function(data)
-        {     
-              $('#mbtnCerrar').click();
-            bootbox.alert({message:data, size:'small', backdrop:true});
-            tabla.ajax.reload();
+//Funcion para eliminar contactos
+function eliminar(idcontacto)
+{
+    bootbox.confirm("¿Está seguro de eliminar el contacto?", function(result){
+        if (result) 
+        {
+            $.post("../ajax/contacto.php?op=eliminar", {idcontacto: idcontacto}, function(e){
+                bootbox.alert({message: e, size:'small', backdrop: true});
+                tabla.ajax.reload();
+            });
         }
+    })
+}
  
-    });
-});
+//Funcion para mostrar datos de contactos y luego editar
+function mostrarc(idcontacto)
+{
+    $.post("../ajax/contacto.php?op=mostrar",{idcontacto : idcontacto}, function(data, status)
+    {
+        data = JSON.parse(data);        
+        mostrarform(true);
  
+        $("#idcontacto").val(data.idcontacto);
+        $("#razonsocial").val(data.razonsocial);
+        $("#rut").val(data.rut);
+        $("#giro").val(data.giro);
+        $("#contacto").val(data.contacto);
+        $("#cargo").val(data.cargo);
+        $("#tlf_1").val(data.tlf_1);
+        $("#tlf_2").val(data.tlf_2);
+        $("#correo").val(data.correo);
+        $("#region").val(data.region);
+        $("#ciudad").val(data.ciudad);
+        $("#comuna").val(data.comuna);
+        $("#direccion").val(data.direccion);
+        $("#canal_deingreso").val(data.canal_deingreso);
+        $("#filtro").val(data.filtro);
+        $("#enlace").val(data.enlace);
+        $("#codigopostal").val(data.codigopostal);
+        $("#imagenmuestra").show();
+        $("#imagenmuestra").attr("src","../files/contactos/"+data.imagen);
+        $("#imagenactual").val(data.imagen);
+        $("#sitioweb").val(data.sitioweb);
+ 
+    })
+}
+
+//funcion para mostrar todos los datos
+function mostrar(idcontacto)
+{
+    $.post("../ajax/contacto.php?op=mostrar",{idcontacto : idcontacto}, function(data, status)
+    {
+        data = JSON.parse(data);        
+        mostrarform(true);
+ 
+        $("#idcontacto").val(data.idcontacto);
+        $("#razonsocial").val(data.razonsocial).prop("disabled",true);
+        $("#rut").val(data.rut).prop("disabled",true);
+        $("#giro").val(data.giro).prop("disabled",true);
+        $("#contacto").val(data.contacto).prop("disabled",true);
+        $("#cargo").val(data.cargo).prop("disabled",true);
+        $("#tlf_1").val(data.tlf_1).prop("disabled",true);
+        $("#tlf_2").val(data.tlf_2).prop("disabled",true);
+        $("#correo").val(data.correo).prop("disabled",true);
+        $("#region").val(data.region).prop("disabled",true);
+        $("#ciudad").val(data.ciudad).prop("disabled",true);
+        $("#comuna").val(data.comuna).prop("disabled",true);
+        $("#direccion").val(data.direccion).prop("disabled",true);
+        $("#canal_deingreso").val(data.canal_deingreso).prop("disabled",true);
+        $("#filtro").val(data.filtro).prop("disabled",true);
+        $("#enlace").val(data.enlace).prop("disabled",true);
+        $("#codigopostal").val(data.codigopostal).prop("disabled",true);
+        $("#imagen").prop("disabled",true);
+        $("#imagenmuestra").show();
+        $("#imagenmuestra").attr("src","../files/contactos/"+data.imagen);
+        $("#imagenactual").val(data.imagen);
+        $("#sitioweb").val(data.sitioweb).prop("disabled",true);
+
+        $("#btnGuardar").hide();
+       
+    })
+}
+
 init();
